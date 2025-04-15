@@ -18,4 +18,8 @@
   "homepage": ""
 }
 
+"dependencies": {
+  "mongodb": "^5.x.x"
+}
+
 
