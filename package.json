@@ -19,7 +19,7 @@
 }
 
 "dependencies": {
-  "mongodb": "^5.x.x"
+  "mongodb": "^6.15.0"
 }
 
 
