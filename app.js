@@ -124,7 +124,7 @@ http.createServer(async (req, res) => {
     res.writeHead(404);
     res.end("404 Not Found");
   }
-
-}).listen(8080, () => {
-  console.log("Server running at http://localhost:8080");
+  
+}).listen(process.env.PORT || 8080, () => {
+    console.log(`Server running at http://localhost:${process.env.PORT || 8080}`);
 });
