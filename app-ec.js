@@ -7,7 +7,8 @@ const path = require('path');
 // Fetch live stock price from Financial Modeling Prep API
 async function fetchLivePrice(ticker) {
   return new Promise((resolve, reject) => {
-    const apiUrl = `https://financialmodelingprep.com/api/v3/quote/${ticker}?apikey=demo`;
+    const apiKey = process.env.FMP_KEY || "Et1l4nh4CnVdZLZXnTB2P74qfeo2e5EP";
+    const apiUrl = `https://financialmodelingprep.com/api/v3/quote/${ticker}?apikey=${apiKey}`;
 
     https.get(apiUrl, (resp) => {
       let data = '';
