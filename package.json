@@ -2,9 +2,9 @@
   "name": "hw11-2",
   "version": "1.0.0",
   "description": "stock ticker app",
-  "main": "app.js",
+  "main": "app-ec.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app-ec.js"
   },
   "repository": {
     "type": "git",
