@@ -7,11 +7,13 @@ const path = require('path');
 const { MongoClient } = require('mongodb');
 const client = new MongoClient("mongodb+srv://noraarahim:CS20@cs020-hw10.trtxqho.mongodb.net/Stock?retryWrites=true&w=majority");
 
+
 // Fetch live stock price from Financial Modeling Prep API
 async function fetchLivePrice(ticker) {
     return new Promise((resolve, reject) => {
-      const apiUrl = `https://financialmodelingprep.com/api/v3/quote/${ticker}?apikey=demo`;
-  
+      const apiKey = "Et1l4nh4CnVdZLZXnTB2P74qfeo2e5EP"; 
+      const apiUrl = `https://financialmodelingprep.com/api/v3/quote/${ticker}?apikey=${apiKey}`;
+
       https.get(apiUrl, (resp) => {
         let data = '';
         resp.on('data', chunk => data += chunk);
