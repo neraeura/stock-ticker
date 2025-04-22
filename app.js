@@ -1,34 +1,9 @@
-
-const https = require('https'); // for calling live stock price APIs
-const http = require('http'); // for creating server
+const http = require('http');
 const url = require('url');
 const fs = require('fs');
 const path = require('path');
 const { MongoClient } = require('mongodb');
 const client = new MongoClient("mongodb+srv://noraarahim:CS20@cs020-hw10.trtxqho.mongodb.net/Stock?retryWrites=true&w=majority");
-
-
-// Fetch live stock price from Financial Modeling Prep API
-async function fetchLivePrice(ticker) {
-    return new Promise((resolve, reject) => {
-      const apiKey = "Et1l4nh4CnVdZLZXnTB2P74qfeo2e5EP"; 
-      const apiUrl = `https://financialmodelingprep.com/api/v3/quote/${ticker}?apikey=${apiKey}`;
-
-      https.get(apiUrl, (resp) => {
-        let data = '';
-        resp.on('data', chunk => data += chunk);
-        resp.on('end', () => {
-          try {
-            const parsed = JSON.parse(data);
-            resolve(parsed[0]?.price || null);
-          } catch (err) {
-            reject(err);
-          }
-        });
-      }).on("error", err => reject(err));
-    });
-  }
-
 
 // Create the server
 http.createServer(async (req, res) => {
@@ -66,17 +41,6 @@ http.createServer(async (req, res) => {
         }
 
         const results = await collection.find(mongoQuery).toArray();
-
-        
-        // Replace DB price with live price if ticker search
-        if (type === 'ticker' && results.length > 0) {
-            const tickerSymbol = results[0].ticker;
-            const livePrice = await fetchLivePrice(tickerSymbol);
-            if (livePrice !== null) {
-            results[0].price = livePrice;
-            }
-        }
-
 
         // Write the styles to search page
         res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
@@ -129,7 +93,7 @@ http.createServer(async (req, res) => {
             <h1>Search Results</h1>
             `);
         
-        // Write results to search page
+        // Write results to
         if (results.length === 0) {
             res.write(`<p>No results found.</p>`);
           } else {
@@ -139,8 +103,7 @@ http.createServer(async (req, res) => {
             });
             res.write(`</ul>`);
           }
-        
-        // Close the page
+
         res.write(`
             <a href="/" class="back-link">Back to Search</a>
           </body>
