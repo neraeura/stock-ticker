@@ -3,30 +3,30 @@ const url = require('url');
 const fs = require('fs');
 const path = require('path');
 const { MongoClient } = require('mongodb');
-
 const client = new MongoClient("mongodb+srv://noraarahim:CS20@cs020-hw10.trtxqho.mongodb.net/Stock?retryWrites=true&w=majority");
 
+// Create the server
 http.createServer(async (req, res) => {
   const parsedUrl = url.parse(req.url, true);
   const pathname = parsedUrl.pathname;
 
-  // Show the form
+  // Get the form 
   if (pathname === '/' && req.method === 'GET') {
     const filePath = path.join(__dirname, 'form.html');
-    fs.readFile(filePath, (err, data) => {
+    fs.readFile(filePath, (err, data) => { // callback handles succ/fail
       if (err) {
         res.writeHead(500);
         res.end('Error loading form');
       } else {
         res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.end(data);
+        res.end(data); // sends file content back to browser 
       }
     });
 
   // Handle the form submission
   } else if (pathname === '/search' && req.method === 'GET') {
     const query = parsedUrl.query;
-    const { search, type } = query;
+    const { search, type } = query; // get values out of query string
 
     try {
         await client.connect();
@@ -42,10 +42,8 @@ http.createServer(async (req, res) => {
 
         const results = await collection.find(mongoQuery).toArray();
 
-
-        // Write to search page
+        // Write the styles to search page
         res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-
         res.write(`
             <!DOCTYPE html>
             <html lang="en">
@@ -94,7 +92,8 @@ http.createServer(async (req, res) => {
             <body>
             <h1>Search Results</h1>
             `);
-
+        
+        // Write results to search page
         if (results.length === 0) {
             res.write(`<p>No results found.</p>`);
           } else {
@@ -104,7 +103,8 @@ http.createServer(async (req, res) => {
             });
             res.write(`</ul>`);
           }
-
+        
+        // Close the page
         res.write(`
             <a href="/" class="back-link">Back to Search</a>
           </body>
