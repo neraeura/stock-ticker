@@ -93,7 +93,7 @@ http.createServer(async (req, res) => {
             <h1>Search Results</h1>
             `);
         
-        // Write results to
+        // Write results to search page
         if (results.length === 0) {
             res.write(`<p>No results found.</p>`);
           } else {
@@ -103,7 +103,8 @@ http.createServer(async (req, res) => {
             });
             res.write(`</ul>`);
           }
-
+        
+        // Close the page
         res.write(`
             <a href="/" class="back-link">Back to Search</a>
           </body>
